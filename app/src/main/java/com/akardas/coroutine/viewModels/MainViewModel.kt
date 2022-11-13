@@ -1,6 +1,7 @@
 package com.akardas.coroutine.viewModels
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.akardas.coroutine.networking.MainRepository
 import com.akardas.coroutine.networking.models.LoginDataModel
@@ -28,6 +29,19 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
              ConcludeData.getResultData(mainRepository.getSingleUser(userID))
          }
      }
+
+    fun updateUser(dataModel: LoginDataModel,userID: Int) = runBlocking {
+        withContext(Dispatchers.IO){
+            ConcludeData.getResultData(mainRepository.updateUser(dataModel,userID))
+        }
+    }
+
+    fun updateUserWithPath(dataModel: LoginDataModel) = runBlocking {
+        withContext(Dispatchers.IO){
+            ConcludeData.getResultData(mainRepository.updateUserWithPatch(dataModel))
+        }
+    }
+
 
 
 

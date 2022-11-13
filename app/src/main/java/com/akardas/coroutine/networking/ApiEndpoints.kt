@@ -1,9 +1,6 @@
 package com.akardas.coroutine.networking
 
-import com.akardas.coroutine.networking.models.LoginDataModel
-import com.akardas.coroutine.networking.models.RegisModel
-import com.akardas.coroutine.networking.models.SingleUserModel
-import com.akardas.coroutine.networking.models.UserModel
+import com.akardas.coroutine.networking.models.*
 import retrofit2.http.*
 
 interface ApiEndpoints {
@@ -17,13 +14,14 @@ interface ApiEndpoints {
     @GET("api/users/{userID}")
     suspend fun getSingleUser(@Path("userID") userID: Int): SingleUserModel
 
-  /*  @POST("users/language")
-    suspend fun changeLanguage(): Boolean
+    @PUT("api/users/{userID}")
+    suspend fun updateUser(@Body dataModel: LoginDataModel, @Path("userID") userID: Int ):UpdateUserModel
 
-    @GET("api/users/{user_id}")
-    suspend fun getUserData(@Path("user_id") userID: String?): List<UserModel>
+    @PATCH("api/users/2")
+    suspend fun updateUserWithPatch(@Body dataModel: LoginDataModel):UpdateUserModel
 
-    @POST("api/calls")
-    suspend fun createCall(callID: String?): List<UserModel>*/
+   /* @DELETE("api/users/2")
+    suspend fun deleteUser():DeleteResponse?*/
+
 
 }

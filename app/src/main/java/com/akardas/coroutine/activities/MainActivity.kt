@@ -33,6 +33,11 @@ class MainActivity : AppCompatActivity() {
         binding.clickBtn.setOnClickListener {
             getSingleUser(2)
         }
+        val data = LoginDataModel("Abdullah","Android Developer")
+        val data2 = LoginDataModel("Adam","Financial Adviser")
+        updateUser(data,5)
+        updateUserWithPatch(data2)
+
 
         setContentView(binding.root)
     }
@@ -93,6 +98,43 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun updateUser(dataModel: LoginDataModel,userID: Int){
+        viewModel.updateUser(dataModel,userID).observe(this){
+            it?.let {
+                when (it.status){
+                    Status.SUCCESS -> {
+                        Log.i("updateUser", "updateUser: ${it.data}")
+                    }
+                    Status.ERROR -> {
+                        Log.i("updateUser", "updateUser: ${it.exception?.localizedMessage}")
+                    }
+                    else -> {
+                        Log.i("updateUser", "updateUser: ${it.status}")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateUserWithPatch(dataModel: LoginDataModel){
+        viewModel.updateUserWithPath(dataModel).observe(this){
+            it?.let {
+                when (it.status){
+                    Status.SUCCESS -> {
+                        Log.i("updateUserWithPatch", "SUCCESS: ${it.data}")
+                    }
+                    Status.ERROR -> {
+                        Log.i("updateUserWithPatch", "ERROR: ${it.exception?.localizedMessage}")
+                    }
+                    else -> {
+                        Log.i("updateUserWithPatch", "LOADING: ${it.status}")
+                    }
+                }
+            }
+        }
+    }
+
 
 
 }
