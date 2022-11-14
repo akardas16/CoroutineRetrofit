@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">CoroutineRetrofit</string>
+    <string name="text1">GET(\"api/users\")</string>
+    <string name="infoicon">infoIcon</string>
+    <string name="registerUser">POST(\"api/users\")</string>
+    <string name="singleUser">GET(\"api/users/{userID}\")</string>
+    <string name="updateUser">PUT(\"api/users/{userID}\")</string>
+    <string name="updateUserpatch">PATCH(\"api/users/2\")</string>
 </resources>

@@ -1,7 +1,6 @@
 package com.akardas.coroutine.viewModels
 
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.akardas.coroutine.networking.MainRepository
 import com.akardas.coroutine.networking.models.LoginDataModel

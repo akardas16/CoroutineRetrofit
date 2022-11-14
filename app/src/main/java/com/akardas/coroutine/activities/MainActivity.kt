@@ -4,13 +4,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
+import com.akardas.coroutine.Dialog
 import com.akardas.coroutine.ViewModelFactory
 import com.akardas.coroutine.databinding.ActivityMainBinding
+import com.akardas.coroutine.databinding.PopupDialogBinding
 import com.akardas.coroutine.networking.ApiHelper
-import com.akardas.coroutine.networking.models.LoginDataModel
+import com.akardas.coroutine.networking.models.*
 import com.akardas.coroutine.retrofit.RetrofitBuilder
 import com.akardas.coroutine.retrofit.Status
 import com.akardas.coroutine.viewModels.MainViewModel
+import com.github.hariprasanths.bounceview.BounceView
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,33 +29,131 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, ViewModelFactory(ApiHelper(RetrofitBuilder.apiService)))[MainViewModel::class.java]
 
 
-        observeAllUsers()
-        observeRegisteredUser(LoginDataModel("Abdullah","Bussines administration"))
 
 
-        binding.clickBtn.setOnClickListener {
-            getSingleUser(2)
+
+
+
+        val data1 = LoginDataModel("Abdulah","Android Developer")
+        val data2 = LoginDataModel("Adam","Journalist")
+        val data3 = LoginDataModel("Mary","Analyst")
+
+
+        BounceView.addAnimTo(binding.btn1)
+        BounceView.addAnimTo(binding.btn2)
+        BounceView.addAnimTo(binding.btn3)
+        BounceView.addAnimTo(binding.btn4)
+        BounceView.addAnimTo(binding.btn5)
+
+        binding.btn1.setOnClickListener {
+            observeAllUsers{success, e ->
+                val bindingDialog = PopupDialogBinding.inflate(layoutInflater)
+                Dialog.PopUpDialog(this,bindingDialog){alertDialog ->
+                    if (success != null){
+                        bindingDialog.textDialog.text = success.toString()
+                    }else if (e != null){
+                        bindingDialog.textDialog.text = e.message.toString()
+                    }
+                    alertDialog.show()
+                    BounceView.addAnimTo(bindingDialog.OkBtn)
+                    bindingDialog.OkBtn.setOnClickListener {
+                        alertDialog.dismiss()
+                    }
+                }
+
+            }
         }
-        val data = LoginDataModel("Abdullah","Android Developer")
-        val data2 = LoginDataModel("Adam","Financial Adviser")
-        updateUser(data,5)
-        updateUserWithPatch(data2)
+
+        binding.btn2.setOnClickListener {
+            getSingleUser(2){success, e ->
+                val bindingDialog = PopupDialogBinding.inflate(layoutInflater)
+                Dialog.PopUpDialog(this,bindingDialog){alertDialog ->
+                    if (success != null){
+                        bindingDialog.textDialog.text = success.toString()
+                    }else if (e != null){
+                        bindingDialog.textDialog.text = e.message.toString()
+                    }
+                    alertDialog.show()
+                    BounceView.addAnimTo(bindingDialog.OkBtn)
+                    bindingDialog.OkBtn.setOnClickListener {
+                        alertDialog.dismiss()
+                    }
+                }
+
+            }
+        }
+
+        binding.btn3.setOnClickListener {
+            observeRegisteredUser(data1){ success, e ->
+                val bindingDialog = PopupDialogBinding.inflate(layoutInflater)
+                Dialog.PopUpDialog(this,bindingDialog){alertDialog ->
+                    if (success != null){
+                        bindingDialog.textDialog.text = success.toString()
+                    }else if (e != null){
+                        bindingDialog.textDialog.text = e.message.toString()
+                    }
+                    alertDialog.show()
+                    BounceView.addAnimTo(bindingDialog.OkBtn)
+                    bindingDialog.OkBtn.setOnClickListener {
+                        alertDialog.dismiss()
+                    }
+                }
+
+            }
+        }
+
+        binding.btn4.setOnClickListener {
+            updateUser(data2,4){ success, e ->
+                val bindingDialog = PopupDialogBinding.inflate(layoutInflater)
+                Dialog.PopUpDialog(this,bindingDialog){alertDialog ->
+                    if (success != null){
+                        bindingDialog.textDialog.text = success.toString()
+                    }else if (e != null){
+                        bindingDialog.textDialog.text = e.message.toString()
+                    }
+                    alertDialog.show()
+                    BounceView.addAnimTo(bindingDialog.OkBtn)
+                    bindingDialog.OkBtn.setOnClickListener {
+                        alertDialog.dismiss()
+                    }
+                }
+
+            }
+        }
+
+        binding.btn5.setOnClickListener {
+            updateUserWithPatch(data3){ success, e ->
+                val bindingDialog = PopupDialogBinding.inflate(layoutInflater)
+                Dialog.PopUpDialog(this,bindingDialog){alertDialog ->
+                    if (success != null){
+                        bindingDialog.textDialog.text = success.toString()
+                    }else if (e != null){
+                        bindingDialog.textDialog.text = e.message.toString()
+                    }
+                    alertDialog.show()
+                    BounceView.addAnimTo(bindingDialog.OkBtn)
+                    bindingDialog.OkBtn.setOnClickListener {
+                        alertDialog.dismiss()
+                    }
+                }
+
+            }
+        }
 
 
         setContentView(binding.root)
     }
 
-    private fun observeAllUsers(){
+    private fun observeAllUsers(result:(success:UserModel?,e:Exception?) ->Unit){
         viewModel.getUsers().observe(this) {
             it?.let {resources ->
                 when (resources.status){
                     Status.SUCCESS -> {
-                        resources.data?.data?.forEach {res ->
-                            Log.i("dsfsfs", "onCreate: ${res.email}")
-                        }
+                        result.invoke(resources.data,null)
                         //binding.myText.text = resources.data.toString()
                     }
                     Status.ERROR -> {
+                        result.invoke(null,resources.exception)
                         Log.i("dsfsfs", "ERROR: ${resources.exception?.localizedMessage}")
                     }
                     else -> {
@@ -63,14 +164,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeRegisteredUser(dataModel: LoginDataModel){
+    private fun observeRegisteredUser(dataModel: LoginDataModel,result:(success:RegisModel?,e:Exception?) ->Unit){
         viewModel.registerUser(dataModel).observe(this) {res ->
             res?.let {
                 when(it.status){
                     Status.SUCCESS -> {
+                        result.invoke(it.data,null)
                         Log.i("wwerwr", "SUCCESS:${it.data} ")
                     }
                     Status.ERROR -> {
+                        result.invoke(null,it.exception)
                         Log.i("wwerwr", "ERROR:${it.exception?.localizedMessage} ")
                     }
                     else -> {
@@ -81,14 +184,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getSingleUser(userID:Int){
+    private fun getSingleUser(userID:Int,result:(success:SingleUserModel?,e:Exception?) ->Unit){
         viewModel.getSingleUser(userID).observe(this){res ->
             res?.let {
                 when (it.status){
                     Status.SUCCESS -> {
+                        result.invoke(it.data,null)
                         Log.i("ssfsfw", "getSingleUser: ${it.data}")
                     }
                     Status.ERROR -> {
+                        result.invoke(null,it.exception)
                         Log.i("ssfsfw", "getSingleUser: ${it.exception?.localizedMessage}")
                     }
                     else -> {
@@ -99,14 +204,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUser(dataModel: LoginDataModel,userID: Int){
+    private fun updateUser(dataModel: LoginDataModel,userID: Int,result:(success:UpdateUserModel?,e:Exception?) ->Unit){
         viewModel.updateUser(dataModel,userID).observe(this){
             it?.let {
                 when (it.status){
                     Status.SUCCESS -> {
+                        result.invoke(it.data,null)
                         Log.i("updateUser", "updateUser: ${it.data}")
                     }
                     Status.ERROR -> {
+                        result.invoke(null,it.exception)
                         Log.i("updateUser", "updateUser: ${it.exception?.localizedMessage}")
                     }
                     else -> {
@@ -117,14 +224,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUserWithPatch(dataModel: LoginDataModel){
+    private fun updateUserWithPatch(dataModel: LoginDataModel,result:(success:UpdateUserModel?,e:Exception?) ->Unit){
         viewModel.updateUserWithPath(dataModel).observe(this){
             it?.let {
                 when (it.status){
                     Status.SUCCESS -> {
+                        result.invoke(it.data,null)
                         Log.i("updateUserWithPatch", "SUCCESS: ${it.data}")
                     }
                     Status.ERROR -> {
+                        result.invoke(null,it.exception)
                         Log.i("updateUserWithPatch", "ERROR: ${it.exception?.localizedMessage}")
                     }
                     else -> {
