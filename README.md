@@ -9,7 +9,6 @@
 
 * GET
 * POST 
-* UPDATE
 * PUT
 * PATCH
 * DELETE
