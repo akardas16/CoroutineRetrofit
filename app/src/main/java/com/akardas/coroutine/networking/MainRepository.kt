@@ -3,11 +3,12 @@ package com.akardas.coroutine.networking
 import com.akardas.coroutine.networking.models.LoginDataModel
 
 
-class MainRepository(private val apiHelper: ApiHelper) {
+class MainRepository(private val apiService: ApiEndpoints) {
 
-    suspend fun getUsers() = apiHelper.getUsers()
-    suspend fun getSingleUser(userID:Int) = apiHelper.getSingleUser(userID)
-    suspend fun registerUser(dataModel: LoginDataModel) = apiHelper.registerUser(dataModel)
-    suspend fun updateUser(dataModel: LoginDataModel,userID: Int) = apiHelper.updateUser(dataModel,userID)
-    suspend fun updateUserWithPatch(dataModel: LoginDataModel) = apiHelper.updateUserWithPatch(dataModel)
+
+    suspend fun getUsers() = apiService.getUsers()
+    suspend fun getSingleUser(userID:Int) = apiService.getSingleUser(userID)
+    suspend fun registerUser(dataModel: LoginDataModel) = apiService.registerUser(dataModel)
+    suspend fun updateUser(dataModel: LoginDataModel,userID: Int) = apiService.updateUser(dataModel,userID)
+    suspend fun updateUserWithPatch(dataModel: LoginDataModel) = apiService.updateUserWithPatch(dataModel)
 }

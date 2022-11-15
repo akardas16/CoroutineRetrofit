@@ -8,7 +8,6 @@ import com.akardas.coroutine.Dialog
 import com.akardas.coroutine.ViewModelFactory
 import com.akardas.coroutine.databinding.ActivityMainBinding
 import com.akardas.coroutine.databinding.PopupDialogBinding
-import com.akardas.coroutine.networking.ApiHelper
 import com.akardas.coroutine.networking.models.*
 import com.akardas.coroutine.retrofit.RetrofitBuilder
 import com.akardas.coroutine.retrofit.Status
@@ -26,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this, ViewModelFactory(ApiHelper(RetrofitBuilder.apiService)))[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this, ViewModelFactory(RetrofitBuilder.apiService))[MainViewModel::class.java]
 
 
 
