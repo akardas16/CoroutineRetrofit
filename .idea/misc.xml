@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Abdullah/AndroidStudioProjects/CoroutineRetrofit/app/src/main/res/drawable/button_backgrnd.xml" value="0.136" />
+        <entry key="..\:/Users/Abdullah/AndroidStudioProjects/CoroutineRetrofit/app/src/main/res/drawable/dialog_background.xml" value="0.117" />
+        <entry key="..\:/Users/Abdullah/AndroidStudioProjects/CoroutineRetrofit/app/src/main/res/drawable/ic_round_info_24.xml" value="0.117" />
         <entry key="..\:/Users/Abdullah/AndroidStudioProjects/CoroutineRetrofit/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/Abdullah/AndroidStudioProjects/CoroutineRetrofit/app/src/main/res/layout/popup_dialog.xml" value="0.22521367521367522" />
       </map>
     </option>
   </component>
