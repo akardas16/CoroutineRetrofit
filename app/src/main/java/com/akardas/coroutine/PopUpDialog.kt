@@ -22,6 +22,23 @@ object Dialog {
         build.invoke(alertDialog)
 
     }
+     
+     fun special(activity: Activity, dialogBinding: ViewBinding, dialogWidth:Double = 0.75, build:(myDialog:android.app.Dialog) -> Unit){
+       val dialog = android.app.Dialog(activity)
+
+       dialog.apply {
+           requestWindowFeature(Window.FEATURE_NO_TITLE)
+           setCancelable(false)
+           window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+           val deviceWidth: Int = Resources.getSystem().displayMetrics.widthPixels
+           BounceView.addAnimTo(this)
+           setContentView(dialogBinding.root, ViewGroup.LayoutParams((deviceWidth * dialogWidth).toInt(),LayoutParams.WRAP_CONTENT))
+           build.invoke(this)
+       }
+
+
+    }
+     
      fun BottomSheetDialog(context: Context, bottomSheetBinding: ViewBinding, build:(bottomSheetDialog:BottomSheetDialog) -> Unit) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
          bottomSheetDialog.apply {
